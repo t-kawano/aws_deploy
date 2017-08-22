@@ -1,17 +1,19 @@
-machine:
-  node:
-    version: 4.3
+version: 2
 
-dependencies:
-  override:
-    - npm install
+jobs:
+  deploy_serverless:
+    docker:
+      - image: circleci/node:4.8.2
+    working_directory: ~/circleci-demo-workflows
+    steps:
+      - checkout
+      - run:
+        name: sercerless deploy shell
+        command:
+          - ./ci/deploy_dev.sh
 
-test:
-  override:
-    - echo "skip test"
-
-deployment:
-  dev:
-    branch: dev
-    commands:
-      - ./ci/deploy_dev.sh
+workflows:
+  version: 2
+  deploy_flow:
+    jobs:
+      - deploy_serverless
