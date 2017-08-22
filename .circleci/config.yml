@@ -3,13 +3,25 @@ version: 2
 jobs:
   deploy_serverless:
     docker:
-      - image: circleci/node:4.8.2
+      - image: node:6.7.0
     working_directory: ~/circleci-demo-workflows
     steps:
       - checkout
       - run:
-          name: sercerless deploy shell
-          command: sh ./ci/deploy_dev.sh
+          name: install serverless framework
+          command: npm install -g serverless
+      - run:
+          name: pwd
+          command: pwd
+      - run:
+          name: cd
+          command: cd ./src
+      - run:
+          name: delete unused packages
+          command: npm prune --production
+      - run:
+          name: serverless deploy
+          command: serverless deploy --region us-east-2
 
 workflows:
   version: 2
