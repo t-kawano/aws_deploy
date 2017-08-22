@@ -9,8 +9,7 @@ jobs:
       - checkout
       - run:
           name: sercerless deploy shell
-          command:
-            - ./ci/deploy_dev.sh
+          command: sh ./ci/deploy_dev.sh
 
 workflows:
   version: 2
