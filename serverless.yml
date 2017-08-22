@@ -1,0 +1,72 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    v1.docs.serverless.com
+#
+# Happy Coding!
+
+service: aws-deploy-ci
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: vtest
+  region: ${opt:region, self:custom.defaultRegion}
+  profile: ${opt:profile, self:custom.defaultProfile}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:*"
+      Resource:
+        - "arn:aws:dynamodb:${opt:region, self:custom.defaultRegion}:*:table/*"
+    - Effect: "Allow"
+      Action:
+        - "states:*"
+      Resource:
+        - "*"
+
+custom:
+  defaultProfile: twitter-dev
+  defaultRegion: ap-northeast-1
+
+# 使うときに上げる
+# plugins:
+#   - serverless-step-functions
+
+# package:
+#   include:
+#     - lib
+#     - app
+#     - repository
+#     - utils
+
+functions:
+  accounts-account-id-campaigns-post:
+    handler: fuga.get
+    timeout: 60
+    events:
+      - http:
+          path: hoge/fuga
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            parameters:
+              headers:
+                Authorization: true
+              querystrings:
+                user_id: false
+                name: false
+            template:
+              application/json: ${file(./definitions/common.yml):requestTemplates}
+          response:
+            statusCodes:
+              ${file(./definitions/common.yml):responseTemplates}
+            headers:
+              ${file(./definitions/common.yml):postCorsHeaders}

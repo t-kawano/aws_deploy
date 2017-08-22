@@ -1,0 +1,8 @@
+definitions:
+  accounts_account_id_stats_cost_get_response:
+    type: object
+    properties:
+      nani:
+        type: string
+      seda:
+        type: string

@@ -1,0 +1,7 @@
+/hoge/fuga:
+  get:
+    parameters:
+      user_id:
+        description: hoge。
+      name:
+        description: fuga。

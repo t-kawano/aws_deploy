@@ -1,0 +1,79 @@
+requestTemplates: |-
+    #set($allParams = $input.params())
+    {
+        #set($params = $allParams.get("querystring"))
+        #foreach($paramName in $params.keySet())
+            "$paramName" : "$util.escapeJavaScript($params.get($paramName)).replaceAll("\\'", "'")",
+        #end
+
+        #set($params = $allParams.get("path"))
+        #foreach($paramName in $params.keySet())
+            #if($paramName != "options")
+            "$paramName" : "$util.escapeJavaScript($params.get($paramName)).replaceAll("\\'", "'")",
+            #end
+        #end
+
+        "body": $input.json('$'),
+        "user_name" : "$context.authorizer.name",
+        "user_email" : "$context.authorizer.email",
+        "user_oem_id" : "$context.authorizer.oem_id",
+        "user_id" : "$context.authorizer.user_id"
+    }
+responseTemplates: 
+    200: 
+        pattern: ''
+        template: '#set($allParams = $input.params()) $input.json(''$'')'
+    400:
+        pattern: '.*\[400\].*'
+        template: |-
+            #set($inputRoot = $input.path('$'))
+            {
+                "Message": "$inputRoot.errorMessage"
+            }
+    401:
+        pattern: '.*\[401\].*'
+        template: |-
+            #set($inputRoot = $input.path('$'))
+            {
+                "Message": "$inputRoot.errorMessage"
+            }
+    403:
+        pattern: '.*\[403\].*'
+        template: |-
+            #set($inputRoot = $input.path('$'))
+            {
+                "Message": "$inputRoot.errorMessage"
+            }
+    404:
+        pattern: '.*\[404\].*'
+        template: |-
+            #set($inputRoot = $input.path('$'))
+            {
+                "Message": "$inputRoot.errorMessage"
+            }
+    500:
+        pattern: '.*\[500\].*'
+        template: |-
+            #set($inputRoot = $input.path('$'))
+            {
+                "Message": "$inputRoot.errorMessage"
+            }
+postCorsHeaders:
+    Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    Access-Control-Allow-Methods: '''post,options'''
+    Access-Control-Allow-Origin: '''*'''
+
+getCorsHeaders:
+    Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    Access-Control-Allow-Methods: '''get,options'''
+    Access-Control-Allow-Origin: '''*'''
+
+putCorsHeaders:
+    Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    Access-Control-Allow-Methods: '''put,options'''
+    Access-Control-Allow-Origin: '''*'''
+
+deleteCorsHeaders:
+    Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    Access-Control-Allow-Methods: '''delete,options'''
+    Access-Control-Allow-Origin: '''*'''
