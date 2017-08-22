@@ -17,8 +17,8 @@ jobs:
           name: cd
           command: cd ./src
       - run:
-          name: delete unused packages
-          command: npm prune --production
+          name: pwd2
+          command: pwd
       - run:
           name: serverless deploy
           command: serverless deploy --region us-east-2
