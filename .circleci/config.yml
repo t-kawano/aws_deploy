@@ -14,14 +14,14 @@ jobs:
           name: pwd
           command: pwd
       - run:
-          name: cd
-          command: cd ./src
-      - run:
-          name: pwd2
-          command: pwd
+          name: list
+          command: ls -la
       - run:
           name: serverless deploy
-          command: serverless deploy --region us-east-2
+          command: sh ./ci/deploy_dev.sh
+      # - run:
+      #     name: serverless deploy
+      #     command: serverless deploy --region us-east-2
 
 workflows:
   version: 2
