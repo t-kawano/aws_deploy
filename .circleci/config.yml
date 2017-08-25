@@ -10,7 +10,7 @@ jobs:
         - master
         - stg
         - dev
-        - /feature.*
+        - /feature.*/
     steps:
       # - checkout
       # - run:
