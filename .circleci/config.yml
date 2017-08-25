@@ -39,8 +39,6 @@ jobs:
       - *attach_workspace
       - *load_code
       - run:
-          name: set1
-      - run:
           name: set2
           command: pwd
       - run:
