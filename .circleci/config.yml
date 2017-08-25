@@ -32,7 +32,7 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - sample-ansible
+            - workspace
   job2:
     <<: *container_config
     steps:
@@ -62,4 +62,8 @@ workflows:
     jobs:
       - job1
       - job2
+          requires:
+            - job1
       - job3
+          requires:
+            - job2
