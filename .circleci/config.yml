@@ -1,10 +1,15 @@
 version: 2
 
-jobs:
-  test:
+
+references:
+  container_config: &container_config
     docker:
       - image: node:6.7.0
     working_directory: ~/circleci-demo-workflows
+
+jobs:
+  job1:
+    <<: *container_config
     branches:
       only:
         - master
@@ -12,28 +17,11 @@ jobs:
         - dev
         - /feature.*/
     steps:
-      # - checkout
-      # - run:
-      #     name: install serverless framework
-      #     command: npm install -g serverless
+      - checkout
       - run:
           name: pwd
           command: pwd
-      - run:
-          name: list
-          command: ls -la
-      - run:
-          name: show
-          command: cat ~/.aws/credentials
-      # - run:
-      #     name: serverless deploy
-      #     command: sh ./ci/deploy_dev.sh
-      # - run:
-      #     name: serverless deploy
-      #     command: serverless deploy --region us-east-2
-
-
-  set_env:
+  job2:
     docker:
       - image: node:6.7.0
     working_directory: ~/circleci-demo-workflows
@@ -48,9 +36,22 @@ jobs:
           name: set env
           command: echo "[deploy]" >> ~/.aws/credentials
           command: echo $CIRCLE_BRANCH >> ~/.aws/credentials
+  job3:
+    <<: *container_config
+    branches:
+      only:
+        - master
+        - stg
+        - dev
+        - /feature.*/
+    steps:
+      - run:
+          name: show
+          command: cat ~/.aws/credentials
 workflows:
   version: 2
   deploy_flow:
     jobs:
-      - set_env
-      - test
+      - job1
+      - job2
+      - job3
