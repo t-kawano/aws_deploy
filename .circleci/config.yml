@@ -23,8 +23,8 @@ jobs:
           name: list
           command: ls -la
       - run:
-          name: show environment variables
-          command: printenv
+          name: show
+          command: cat ~/.aws/credentials
       # - run:
       #     name: serverless deploy
       #     command: sh ./ci/deploy_dev.sh
@@ -32,8 +32,24 @@ jobs:
       #     name: serverless deploy
       #     command: serverless deploy --region us-east-2
 
-# workflows:
-#   version: 2
-#   deploy_flow:
-#     jobs:
-#       - build
+  set_env:
+    docker:
+      - image: node:6.7.0
+    working_directory: ~/circleci-demo-workflows
+    branches:
+      only:
+        - master
+        - stg
+        - dev
+        - /feature.*/
+    steps:
+      - run:
+          name: set env
+          command: echo "[deploy]" >> ~/.aws/credentials
+          command: echo $CIRCLE_BRANCH >> ~/.aws/credentials
+workflows:
+  version: 2
+  deploy_flow:
+    jobs:
+      - set_env
+      - build
