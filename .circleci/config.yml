@@ -32,6 +32,7 @@ jobs:
       #     name: serverless deploy
       #     command: serverless deploy --region us-east-2
 
+
   set_env:
     docker:
       - image: node:6.7.0
