@@ -32,8 +32,8 @@ jobs:
       #     name: serverless deploy
       #     command: serverless deploy --region us-east-2
 
-workflows:
-  version: 2
-  deploy_flow:
-    jobs:
-      - build
+# workflows:
+#   version: 2
+#   deploy_flow:
+#     jobs:
+#       - build
