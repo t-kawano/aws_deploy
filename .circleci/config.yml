@@ -48,9 +48,9 @@ jobs:
           name: set env
           command: echo "[deploy]" >> ~/.aws/credentials
           command: echo $CIRCLE_BRANCH >> ~/.aws/credentials
-workflows:
-  version: 2
-  deploy_flow:
-    jobs:
-      - set_env
-      - build
+# workflows:
+#   version: 2
+#   deploy_flow:
+#     jobs:
+#       - set_env
+#       - build
