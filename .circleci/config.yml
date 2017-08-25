@@ -61,9 +61,9 @@ workflows:
   build_flow:
     jobs:
       - job1
-      - job2
+      - job2:
           requires:
             - job1
-      - job3
+      - job3:
           requires:
             - job2
