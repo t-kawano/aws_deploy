@@ -34,6 +34,6 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  deploy_flow:
     jobs:
-      - deploy_serverless
+      - build
