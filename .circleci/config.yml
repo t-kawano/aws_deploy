@@ -40,7 +40,9 @@ jobs:
       - *load_code
       - run:
           name: set credentials
+          command: pwd
           command: mkdir -p ~/.aws
+          command: ls -la
           command: echo "[deploy]" >> ~/.aws/credentials
           command: echo $CIRCLE_BRANCH >> ~/.aws/credentials
   job3:
