@@ -6,6 +6,20 @@ references:
       - image: node:6.7.0
     working_directory: ~/circleci-demo-workflows
 
+  workspace_root: &workspace_root
+      /tmp
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+
+  load_code: &load_code
+    run:
+      name: load code from workspace
+      command: |
+          # Move all files and dotfiles to current directory
+          mv /tmp/workspace/* /tmp/workspace/.[!.]* .
+
 jobs:
   job1:
     <<: *container_config
@@ -18,12 +32,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: pwd
-          command: pwd
+          command: |
+              mkdir -p /tmp/workspace
+              mv * .[!.]* /tmp/workspace/
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - sample-ansible
   job2:
-    docker:
-      - image: node:6.7.0
-    working_directory: ~/circleci-demo-workflows
+    <<: *container_config
     branches:
       only:
         - master
@@ -31,6 +48,8 @@ jobs:
         - dev
         - /feature.*/
     steps:
+      - *attach_workspace
+      - *load_code
       - run:
           name: set env
           command: echo "[deploy]" >> ~/.aws/credentials
@@ -44,9 +63,17 @@ jobs:
         - dev
         - /feature.*/
     steps:
+      - *attach_workspace
+      # - *load_code
       - run:
           name: show
           command: cat ~/.aws/credentials
+      - run:
+          name: pwd
+          command: pwd
+      - run:
+          name: ls
+          command: ls -la
 workflows:
   version: 2
   build_flow:
