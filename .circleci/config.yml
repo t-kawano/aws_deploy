@@ -39,11 +39,21 @@ jobs:
       - *attach_workspace
       - *load_code
       - run:
-          name: set credentials
+          name: set1
+      - run:
+          name: set2
           command: pwd
+      - run:
+          name: set3
           command: mkdir -p ~/.aws
+      - run:
+          name: set4
           command: ls -la
+      - run:
+          name: set5
           command: echo "[deploy]" >> ~/.aws/credentials
+      - run:
+          name: set6
           command: echo $CIRCLE_BRANCH >> ~/.aws/credentials
   job3:
     <<: *container_config
