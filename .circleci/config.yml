@@ -5,6 +5,12 @@ jobs:
     docker:
       - image: node:6.7.0
     working_directory: ~/circleci-demo-workflows
+    branches:
+      only:
+        - master
+        - stg
+        - dev
+        - /feature.*
     steps:
       # - checkout
       # - run:
