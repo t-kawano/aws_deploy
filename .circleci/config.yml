@@ -4,13 +4,7 @@ jobs:
   deploy_serverless:
     docker:
       - image: node:6.7.0
-    working_directory: ~/circleci-demo-workflows/src
-    branches:
-      only:
-        - master
-        # - stg
-        - dev
-        - /feature.*
+    working_directory: ~/circleci-demo-workflows
     steps:
       # - checkout
       # - run:
