@@ -39,7 +39,8 @@ jobs:
       - *attach_workspace
       - *load_code
       - run:
-          name: set env
+          name: set credentials
+          command: mkdir -p ~/.aws/credentials
           command: echo "[deploy]" >> ~/.aws/credentials
           command: echo $CIRCLE_BRANCH >> ~/.aws/credentials
   job3:
@@ -56,6 +57,7 @@ jobs:
       - run:
           name: ls
           command: ls -la
+
 workflows:
   version: 2
   build_flow:
