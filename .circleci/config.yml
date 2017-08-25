@@ -1,6 +1,5 @@
 version: 2
 
-
 references:
   container_config: &container_config
     docker:
@@ -50,7 +49,7 @@ jobs:
           command: cat ~/.aws/credentials
 workflows:
   version: 2
-  deploy_flow:
+  build_flow:
     jobs:
       - job1
       - job2
