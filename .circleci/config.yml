@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  deploy_serverless:
+  build:
     docker:
       - image: node:6.7.0
     working_directory: ~/circleci-demo-workflows
@@ -34,6 +34,6 @@ jobs:
 
 workflows:
   version: 2
-  deploy_flow:
+  build:
     jobs:
       - deploy_serverless
