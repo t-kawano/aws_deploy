@@ -1,43 +1,20 @@
 version: 2
 
-references:
-  container_config: &container_config
+jobs:
+  build:
     docker:
       - image: node:6.7.0
     working_directory: ~/circleci-demo-workflows
-
-  workspace_root: &workspace_root
-      /tmp
-
-  attach_workspace: &attach_workspace
-    attach_workspace:
-      at: *workspace_root
-
-  load_code: &load_code
-    run:
-      name: load code from workspace
-      command: |
-          # Move all files and dotfiles to current directory
-          mv /tmp/workspace/* /tmp/workspace/.[!.]* .
-
-jobs:
-  job1:
-    <<: *container_config
+    branches:
+      only:
+        - master
+        - dev
     steps:
       - checkout
       - run:
           command: |
-              mkdir -p /tmp/workspace
-              mv * .[!.]* /tmp/workspace/
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - workspace
-  job2:
-    <<: *container_config
-    steps:
-      - *attach_workspace
-      - *load_code
+              pwd
+              ls -la
       - run:
           name: set2
           command: pwd
@@ -53,11 +30,6 @@ jobs:
       - run:
           name: set6
           command: echo $CIRCLE_BRANCH >> ~/.aws/credentials
-  job3:
-    <<: *container_config
-    steps:
-      - *attach_workspace
-      # - *load_code
       - run:
           name: show
           command: cat ~/.aws/credentials
@@ -67,15 +39,3 @@ jobs:
       - run:
           name: ls
           command: ls -la
-
-workflows:
-  version: 2
-  build_flow:
-    jobs:
-      - job1
-      - job2:
-          requires:
-            - job1
-      - job3:
-          requires:
-            - job2
