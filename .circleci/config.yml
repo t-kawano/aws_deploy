@@ -1,41 +1,29 @@
 version: 2
-
 jobs:
-  build:
+  unittest:
+    docker:
+      - image: docker:17.05.0-ce-git
+    working_directory: /var/workspace
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: echo a
+          command: echo "AAAAAAAAAAAA"
+  deploy:
     docker:
       - image: node:6.7.0
-    working_directory: ~/circleci-demo-workflows
-    branches:
-      only:
-        - master
-        - dev
+    working_directory: /var/workspace
     steps:
       - checkout
       - run:
-          command: |
-              pwd
-              ls -la
-      - run:
-          name: set2
-          command: pwd
-      - run:
-          name: set3
-          command: mkdir -p ~/.aws
-      - run:
-          name: set4
-          command: ls -la
-      - run:
-          name: set5
-          command: echo "[deploy]" >> ~/.aws/credentials
-      - run:
-          name: set6
-          command: echo $CIRCLE_BRANCH >> ~/.aws/credentials
-      - run:
-          name: show
-          command: cat ~/.aws/credentials
-      - run:
-          name: pwd
-          command: pwd
-      - run:
-          name: ls
-          command: ls -la
+          name: echo b
+          command: echo "BBBBBBBBB"
+workflows:
+  version: 2
+  build_accept_deploy:
+    jobs:
+      - unittest
+      - deploy:
+          requires:
+            - unittest
